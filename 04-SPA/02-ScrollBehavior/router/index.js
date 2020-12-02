@@ -55,7 +55,7 @@ export const router = new VueRouter({
       component: () => import('../views/MeetupPage'),
       children: [
         {
-          path: '',
+          path: 'description',
           alias: 'description',
           name: 'meetup-description',
           props: true,
