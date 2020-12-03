@@ -5,9 +5,7 @@
       <p>ID: {{ meetup.title }}</p>
       <p><router-link to="/meetups/2">Go to 2</router-link></p>
       <p>
-        <button @click="go('meetup-description')">
-          Go To Description
-        </button>
+        <button @click="go('meetup-description')">Go To Description</button>
       </p>
       <p><button @click="go('meetup-agenda')">Agenda</button></p>
       <router-view :meetup="meetup" />
