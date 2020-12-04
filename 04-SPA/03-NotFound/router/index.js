@@ -19,17 +19,9 @@ export const router = new VueRouter({
       component: PageB,
     },
     {
-      path: '*',
+      path: '/page-unknown',
+      alias: '*',
       component: NotFoundPage,
     },
   ],
 });
-// router.beforeEach((to, from, next) => {
-//   console.log(to);
-//   next();
-//   if (to.matched.find(({ path }) => to.path === path)) {
-//     next();
-//   } else {
-//     next({ path: '/page-unknown' });
-//   }
-// });
