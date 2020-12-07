@@ -1,5 +1,5 @@
 <template>
-  <form class="form">
+  <form class="form" @submit="submit">
     <div class="form-group">
       <label class="form-label">Email</label>
       <div class="input-group">
@@ -23,11 +23,7 @@
       </div>
     </div>
     <div class="form__buttons">
-      <button
-        type="submit"
-        class="button button_primary button_block"
-        @click="submit"
-      >
+      <button type="submit" class="button button_primary button_block">
         Войти
       </button>
     </div>
