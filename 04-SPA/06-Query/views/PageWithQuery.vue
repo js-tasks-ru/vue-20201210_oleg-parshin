@@ -106,9 +106,8 @@ export default {
       if (!query.search) {
         delete query.search;
       }
-      console.log('query');
-      this.$router.push({
-        //
+      // выбрал пуш метод, он добавляет в стек истории роут, а риплэйс заменяет
+      this.$router.replace({
         path: '/',
         query,
       });
