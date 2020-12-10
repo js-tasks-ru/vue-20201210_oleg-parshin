@@ -17,7 +17,7 @@
 export default {
   name: 'App',
   created() {
-    this.$router.replace('/');
+    //this.$router.replace('/');
   },
 };
 </script>

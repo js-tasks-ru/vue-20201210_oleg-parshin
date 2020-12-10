@@ -17,7 +17,7 @@
 export default {
   name: 'App',
   created() {
-    this.$router.replace('/page-a');
+    console.log('created');
   },
 };
 </script>

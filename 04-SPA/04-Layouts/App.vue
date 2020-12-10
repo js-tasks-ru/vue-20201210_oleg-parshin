@@ -1,22 +1,50 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link :to="{ name: 'meetups' }">Митапы</router-link> |
-      <router-link :to="{ name: 'form' }">Создать митап</router-link> |
-      <router-link :to="{ name: 'login' }">Вход</router-link>
-    </nav>
     <base-layout>
+      <template v-slot:header>
+        <the-header />
+      </template>
+
       <router-view />
+
+      <template v-slot:footer>
+        <the-footer />
+      </template>
     </base-layout>
   </div>
 </template>
 
 <script>
 import BaseLayout from './components/BaseLayout';
+import TheHeader from './components/TheHeader';
+import TheFooter from './components/TheFooter';
 export default {
   name: 'App',
-  components: { BaseLayout },
+  components: {
+    BaseLayout,
+    TheHeader,
+    TheFooter,
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+:root {
+  --body-color: #34423f;
+  --white: #fff;
+  --grey: #cbd4e9;
+  --grey-light: #f8f9fc;
+  --grey-2: #dee1e1;
+  --grey-3: #ced4d3;
+  --grey-8: #5e706c;
+  --blue: #4c6bb6;
+  --blue-2: #688dc0;
+  --blue-light: #b8c5e2;
+  --blue-extra: #eaedf7;
+  --red: #db3851;
+  --red-light: #e8656f;
+  --green: #24a37e;
+  --green-light: #dff2ec;
+  --default-cover: url('/images/undraw_conference_speaker_6nt7.svg');
+}
+</style>
