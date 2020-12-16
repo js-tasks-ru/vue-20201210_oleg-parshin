@@ -1,10 +1,19 @@
 <template>
-  <button class="button"></button>
+  <component
+    :is="tag"
+    class="button"
+    :class="{ button_block: block }"
+    @click="click"
+  >
+    <slot />
+  </component>
 </template>
 
 <script>
+import options from './options';
 export default {
   name: 'BaseButton',
+  ...options,
 };
 </script>
 
