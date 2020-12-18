@@ -3,7 +3,8 @@
     :is="tag"
     class="button"
     :class="{ button_block: block }"
-    @click="click"
+    v-bind="$attrs"
+    v-on="$listeners"
   >
     <slot />
   </component>
@@ -13,7 +14,7 @@
 import options from './options';
 export default {
   name: 'BaseButton',
-  ...options,
+  mixins: [options],
 };
 </script>
 

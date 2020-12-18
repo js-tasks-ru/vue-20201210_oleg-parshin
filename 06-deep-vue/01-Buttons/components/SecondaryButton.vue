@@ -4,7 +4,8 @@
     :block="block"
     :class="{ button_block: block }"
     class="button_secondary"
-    @click="click"
+    v-bind="$attrs"
+    v-on="$listeners"
   >
     <slot />
   </base-button>
@@ -18,7 +19,7 @@ export default {
   components: {
     BaseButton,
   },
-  ...options,
+  mixins: [options],
 };
 </script>
 

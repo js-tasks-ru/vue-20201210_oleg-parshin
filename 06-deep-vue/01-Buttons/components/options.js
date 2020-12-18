@@ -12,10 +12,4 @@ export default {
       },
     },
   },
-  methods: {
-    click(e) {
-      e.preventDefault();
-      this.$emit('click', e);
-    },
-  },
 };
