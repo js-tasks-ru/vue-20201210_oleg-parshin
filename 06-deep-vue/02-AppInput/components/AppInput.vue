@@ -11,7 +11,7 @@
 
     <component
       v-bind="$attrs"
-      v-on="$listeners"
+      v-on="componentListeners"
       :is="tag"
       class="form-control"
       :class="[
@@ -19,8 +19,7 @@
         { 'form-control_rounded': rounded },
       ]"
       :value="value"
-      @input="$emit('input', $event.target.value)"
-      @change="$emit('change', $event.target.value)"
+      ref="comp"
     />
 
     <slot name="right-icon" />
@@ -35,6 +34,11 @@ export default {
     prop: 'value',
     event: 'input',
   },
+  data() {
+    return {
+      slots: this.$slots,
+    };
+  },
   props: {
     small: Boolean,
     rounded: Boolean,
@@ -45,6 +49,18 @@ export default {
     value: String,
   },
   computed: {
+    componentListeners() {
+      const vm = this;
+      return {
+        ...this.$listeners,
+        input(e) {
+          vm.$emit('input', e.target.value);
+        },
+        change(e) {
+          vm.$emit('change', e.target.value);
+        },
+      };
+    },
     tag() {
       return this.multiline ? 'textarea' : 'input';
     },
@@ -54,6 +70,19 @@ export default {
     rightIconPassed() {
       return !!this.$slots['right-icon'];
     },
+  },
+  watch: {
+    value(newV) {
+      this.$refs.comp.value = newV;
+    },
+    slots(newVal) {
+      console.log(newVal);
+    },
+  },
+  mounted() {
+    if (this.tag === 'textarea') {
+      this.$refs.comp.value = this.value;
+    }
   },
 };
 </script>
