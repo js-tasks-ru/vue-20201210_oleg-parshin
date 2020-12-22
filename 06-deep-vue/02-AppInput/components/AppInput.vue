@@ -65,10 +65,10 @@ export default {
       return this.multiline ? 'textarea' : 'input';
     },
     leftIconPassed() {
-      return !!this.$slots['left-icon'];
+      return !!this.slots['left-icon'];
     },
     rightIconPassed() {
-      return !!this.$slots['right-icon'];
+      return !!this.slots['right-icon'];
     },
   },
   watch: {
@@ -78,6 +78,9 @@ export default {
     slots(newVal) {
       console.log(newVal);
     },
+  },
+  updated() {
+    this.slots = this.$slots;
   },
   mounted() {
     if (this.tag === 'textarea') {
