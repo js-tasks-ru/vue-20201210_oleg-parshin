@@ -7,7 +7,7 @@
     </p>
     <p>
       time with valueAsNumber:
-      <date-input :value-as-number.sync="valueAsNumber" type="time" />
+      <date-input :value-as-number.sync="valueAsNumber" type="time" step="30" />
     </p>
     <p>
       datetime-local with valueAsNumber:
@@ -49,6 +49,7 @@ export default {
       valueAsNumber: +new Date(Date.UTC(2013, 11, 11, 14, 15, 16)),
       value: '2013-12-11',
       showIcons: true,
+      d: '2013-12-11',
     };
   },
 
