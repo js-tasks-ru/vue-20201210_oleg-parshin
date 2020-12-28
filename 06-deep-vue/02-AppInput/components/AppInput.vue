@@ -2,9 +2,9 @@
   <div
     class="input-group"
     :class="[
-      { 'input-group_icon': leftIconPassed || rightIconPassed },
-      { 'input-group_icon-left': leftIconPassed },
-      { 'input-group_icon-right': rightIconPassed },
+      { 'input-group_icon': hasLeftIcon || hasRightIcon },
+      { 'input-group_icon-left': hasLeftIcon },
+      { 'input-group_icon-right': hasRightIcon },
     ]"
   >
     <slot name="left-icon" />
@@ -36,7 +36,8 @@ export default {
   },
   data() {
     return {
-      slots: this.$slots,
+      hasLeftIcon: false,
+      hasRightIcon: false,
     };
   },
   props: {
@@ -50,15 +51,10 @@ export default {
   },
   computed: {
     componentListeners() {
-      const vm = this;
       return {
         ...this.$listeners,
-        input(e) {
-          vm.$emit('input', e.target.value);
-        },
-        change(e) {
-          vm.$emit('change', e.target.value);
-        },
+        input: (e) => this.$emit('input', e.target.value),
+        change: (e) => this.$emit('change', e.target.value),
       };
     },
     tag() {
@@ -73,19 +69,28 @@ export default {
   },
   watch: {
     value(newV) {
-      this.$refs.comp.value = newV;
-    },
-    slots(newVal) {
-      console.log(newVal);
+      if (this.multiline) {
+        this.setValue(newV);
+      }
     },
   },
   updated() {
-    this.slots = this.$slots;
+    this.updateHasIcons();
   },
   mounted() {
-    if (this.tag === 'textarea') {
-      this.$refs.comp.value = this.value;
+    this.updateHasIcons();
+    if (this.multiline) {
+      this.setValue(this.value);
     }
+  },
+  methods: {
+    updateHasIcons() {
+      this.hasLeftIcon = !!this.$slots['left-icon'];
+      this.hasRightIcon = !!this.$slots['right-icon'];
+    },
+    setValue(val) {
+      this.$refs.comp.value = val;
+    },
   },
 };
 </script>
