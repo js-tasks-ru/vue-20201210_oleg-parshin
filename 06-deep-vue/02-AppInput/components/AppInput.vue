@@ -18,8 +18,7 @@
         { 'form-control_sm': small },
         { 'form-control_rounded': rounded },
       ]"
-      :value="value"
-      ref="comp"
+      :value.prop="value"
     />
 
     <slot name="right-icon" />
@@ -67,29 +66,16 @@ export default {
       return !!this.slots['right-icon'];
     },
   },
-  watch: {
-    value(newV) {
-      if (this.multiline) {
-        this.setValue(newV);
-      }
-    },
-  },
   updated() {
     this.updateHasIcons();
   },
   mounted() {
     this.updateHasIcons();
-    if (this.multiline) {
-      this.setValue(this.value);
-    }
   },
   methods: {
     updateHasIcons() {
       this.hasLeftIcon = !!this.$slots['left-icon'];
       this.hasRightIcon = !!this.$slots['right-icon'];
-    },
-    setValue(val) {
-      this.$refs.comp.value = val;
     },
   },
 };
