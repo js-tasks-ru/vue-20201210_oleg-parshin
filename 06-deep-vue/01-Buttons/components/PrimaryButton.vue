@@ -1,25 +1,16 @@
 <template>
-  <base-button
-    :tag="tag"
-    :block="block"
-    :class="{ button_block: block }"
-    class="button_primary"
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
+  <base-button class="button_primary" v-bind="$attrs" v-on="$listeners">
     <slot />
   </base-button>
 </template>
 
 <script>
 import BaseButton from './BaseButton';
-import options from './options';
 export default {
   name: 'PrimaryButton',
   components: {
     BaseButton,
   },
-  mixins: [options],
 };
 </script>
 

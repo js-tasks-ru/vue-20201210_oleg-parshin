@@ -1,25 +1,16 @@
 <template>
-  <base-button
-    :tag="tag"
-    :block="block"
-    :class="{ button_block: block }"
-    class="button_danger"
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
+  <base-button class="button_danger" v-bind="$attrs" v-on="$listeners">
     <slot />
   </base-button>
 </template>
 
 <script>
-import options from './options';
 import BaseButton from './BaseButton';
 export default {
   name: 'DangerButton',
   components: {
     BaseButton,
   },
-  mixins: [options],
 };
 </script>
 
