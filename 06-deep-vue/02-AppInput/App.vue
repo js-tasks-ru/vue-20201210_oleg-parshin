@@ -1,6 +1,5 @@
 <template>
   <div id="app" class="page container">
-    z
     <p>
       <app-input v-model="value" />
     </p>
