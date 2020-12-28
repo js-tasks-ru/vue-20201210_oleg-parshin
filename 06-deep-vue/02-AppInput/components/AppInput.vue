@@ -1,18 +1,97 @@
 <template>
   <div
-    class="input-group input-group_icon input-group_icon-left input-group_icon-right"
+    class="input-group"
+    :class="[
+      { 'input-group_icon': hasLeftIcon || hasRightIcon },
+      { 'input-group_icon-left': hasLeftIcon },
+      { 'input-group_icon-right': hasRightIcon },
+    ]"
   >
-    <img class="icon" />
+    <slot name="left-icon" />
 
-    <input class="form-control form-control_rounded form-control_sm" />
+    <component
+      v-bind="$attrs"
+      v-on="componentListeners"
+      :is="tag"
+      class="form-control"
+      :class="[
+        { 'form-control_sm': small },
+        { 'form-control_rounded': rounded },
+      ]"
+      :value="value"
+      ref="comp"
+    />
 
-    <img class="icon" />
+    <slot name="right-icon" />
   </div>
 </template>
 
 <script>
 export default {
   name: 'AppInput',
+  inheritAttrs: false,
+  model: {
+    prop: 'value',
+    event: 'input',
+  },
+  data() {
+    return {
+      hasLeftIcon: false,
+      hasRightIcon: false,
+    };
+  },
+  props: {
+    small: Boolean,
+    rounded: Boolean,
+    multiline: {
+      type: Boolean,
+      default: false,
+    },
+    value: String,
+  },
+  computed: {
+    componentListeners() {
+      return {
+        ...this.$listeners,
+        input: (e) => this.$emit('input', e.target.value),
+        change: (e) => this.$emit('change', e.target.value),
+      };
+    },
+    tag() {
+      return this.multiline ? 'textarea' : 'input';
+    },
+    leftIconPassed() {
+      return !!this.slots['left-icon'];
+    },
+    rightIconPassed() {
+      return !!this.slots['right-icon'];
+    },
+  },
+  watch: {
+    value(newV) {
+      if (this.multiline) {
+        this.setValue(newV);
+      }
+    },
+  },
+  updated() {
+    this.updateHasIcons();
+  },
+  mounted() {
+    this.updateHasIcons();
+    if (this.multiline) {
+      this.setValue(this.value);
+    }
+  },
+  methods: {
+    updateHasIcons() {
+      this.hasLeftIcon = !!this.$slots['left-icon'];
+      this.hasRightIcon = !!this.$slots['right-icon'];
+    },
+    setValue(val) {
+      this.$refs.comp.value = val;
+    },
+  },
 };
 </script>
 
