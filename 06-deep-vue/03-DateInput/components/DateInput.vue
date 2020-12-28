@@ -39,22 +39,22 @@ export default {
 
   computed: {
     computedValue() {
-      let date;
+      const date = this.valueAsNumber || this.valueAsDate;
+      const { YYYY, MM, DD, hh, mm, ss } = this.getDateComponents(date);
       let value;
       if (this.valueAsDate || this.valueAsNumber) {
-        if (this.type === 'date') {
-          date = this.valueAsNumber || this.valueAsDate;
-          const { YYYY, MM, DD } = this.getDateComponents(date);
-          value = `${YYYY}-${MM}-${DD}`;
-        } else if (this.type === 'datetime-local') {
-          date = this.valueAsNumber || this.valueAsDate;
-          const { YYYY, MM, DD, hh, mm } = this.getDateComponents(date);
-          value = `${YYYY}-${MM}-${DD}T${hh}:${mm}`;
-        } else if (this.type === 'time') {
-          date = this.valueAsNumber || this.valueAsDate;
-          const { hh, mm, ss } = this.getDateComponents(date);
-          const step = this.$attrs['step'];
-          value = +step % 60 ? `${hh}:${mm}:${ss}` : `${hh}:${mm}`;
+        switch (this.type) {
+          case 'date':
+            value = `${YYYY}-${MM}-${DD}`;
+            break;
+          case 'datetime-local':
+            value = `${YYYY}-${MM}-${DD}T${hh}:${mm}`;
+            break;
+          case 'time': {
+            const step = this.$attrs['step'];
+            value = +step % 60 ? `${hh}:${mm}:${ss}` : `${hh}:${mm}`;
+            break;
+          }
         }
       } else {
         value = this.value;
