@@ -13,7 +13,7 @@ export const ImageService = {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({ id: 1 });
-      }, 500);
+      }, 5000);
     });
   },
 

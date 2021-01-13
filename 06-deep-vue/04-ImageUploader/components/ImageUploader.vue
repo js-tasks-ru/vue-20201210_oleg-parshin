@@ -1,24 +1,101 @@
 <template>
   <div class="image-uploader">
     <label
-      class="image-uploader__preview image-uploader__preview-loading"
-      :style="`--bg-image: url('https://course-vue.javascript.ru/api/images/1')`"
+      class="image-uploader__preview"
+      :class="{ 'image-uploader__preview-loading': loading }"
+      :style="`--bg-image: ${
+        this.imgUrl ? 'url(' + this.imgUrl + ')' : 'var(--default-cover)'
+      }`"
     >
-      <span>Удалить изображение</span>
+      <span>{{ inState }}</span>
       <input
         type="file"
         accept="image/*"
         class="form-control-file"
+        v-on="listeners"
+        v-bind="$attrs"
+        :disabled="loading"
       />
     </label>
   </div>
 </template>
 
 <script>
-// import { ImageService } from '../image-service';
+import { ImageService } from '../image-service';
 
 export default {
   name: 'ImageUploader',
+  data() {
+    return {
+      state: {
+        upload: 'Загрузить изображение',
+        remove: 'Удалить изображение',
+        uploading: 'Загрузка ...',
+      },
+      loading: false,
+    };
+  },
+  props: {
+    imageId: {
+      type: [Number, null],
+      default: null,
+    },
+  },
+  model: {
+    prop: 'imageId',
+    event: 'change',
+  },
+  computed: {
+    listeners() {
+      return {
+        ...this.$listeners,
+        change: (e) => this.change(e),
+        click: (e) => this.click(e),
+      };
+    },
+    inState() {
+      let value;
+      if (this.imageId === null && !this.loading) {
+        value = this.state.upload;
+      }
+      if (this.imageId === null && this.loading) {
+        value = this.state.uploading;
+      }
+      if (this.imageId !== null && !this.loading) {
+        value = this.state.remove;
+      }
+      return value;
+    },
+    imgUrl: {
+      get() {
+        return ImageService.getImageURL(this.imageId);
+      },
+      set(imageId) {
+        this.change('change', imageId);
+      },
+    },
+  },
+  methods: {
+    async change({ target: { files } }) {
+      try {
+        this.loading = true;
+        const { id } = await ImageService.uploadImage(files[0]);
+        console.log('opa');
+        this.$emit('change', id);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loading = false;
+      }
+    },
+    click(e) {
+      if (this.imageId !== null) {
+        e.preventDefault();
+        this.$emit('change', null);
+      }
+      this.$emit('click', e);
+    },
+  },
 };
 </script>
 
