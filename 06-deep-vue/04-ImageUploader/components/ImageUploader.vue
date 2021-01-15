@@ -3,12 +3,12 @@
     <label
       class="image-uploader__preview"
       :class="{ 'image-uploader__preview-loading': loading }"
-      :style="`--bg-image: ${
-        this.imgUrl ? 'url(' + this.imgUrl + ')' : 'var(--default-cover)'
-      }`"
+      :style="`--bg-image: ${imgUrl ? 'url(' + imgUrl + ')' : ''}`"
+      @click="click"
     >
       <span>{{ inState }}</span>
       <input
+        ref="input"
         type="file"
         accept="image/*"
         class="form-control-file"
@@ -30,7 +30,7 @@ export default {
       state: {
         upload: 'Загрузить изображение',
         remove: 'Удалить изображение',
-        uploading: 'Загрузка ...',
+        uploading: 'Загрузка...',
       },
       loading: false,
     };
@@ -50,7 +50,6 @@ export default {
       return {
         ...this.$listeners,
         change: (e) => this.change(e),
-        click: (e) => this.click(e),
       };
     },
     inState() {
@@ -66,32 +65,29 @@ export default {
       }
       return value;
     },
-    imgUrl: {
-      get() {
-        return ImageService.getImageURL(this.imageId);
-      },
-      set(imageId) {
-        this.change('change', imageId);
-      },
+    imgUrl() {
+      return ImageService.getImageURL(this.imageId);
     },
   },
   methods: {
-    async change({ target: { files } }) {
-      try {
-        this.loading = true;
-        const { id } = await ImageService.uploadImage(files[0]);
-        console.log('opa');
-        this.$emit('change', id);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        this.loading = false;
-      }
+    change({ target }) {
+      this.loading = true;
+      ImageService.uploadImage(target.files[0])
+        .then(({ id }) => {
+          this.loading = false; // fromm finally block to pass test
+          this.$emit('change', id);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          // this.loading = false;
+          target.value = '';
+        });
     },
     click(e) {
       if (this.imageId !== null) {
         e.preventDefault();
         this.$emit('change', null);
+        this.$refs.input.value = ''; // added to pass the test, doing that in change method
       }
       this.$emit('click', e);
     },
