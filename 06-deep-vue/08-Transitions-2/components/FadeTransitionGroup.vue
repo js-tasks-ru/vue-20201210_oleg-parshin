@@ -21,6 +21,7 @@ export default {
                 ...VNode.data.class,
                 'fade-list-item': true,
               },
+              staticClass: VNode.data.staticClass,
             },
             [VNode.children[0]],
           );

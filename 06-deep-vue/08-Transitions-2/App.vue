@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <button @click="updateList">Update list</button>
-    <fade-transition-group tag="ul">
+    <fade-transition-group tag="ul" class="foo bar" :class="{ baz: true }">
       <li v-for="item in list" :key="item" :class="{ red: item > 0.5 }">
         <div>{{ item }}</div>
       </li>
