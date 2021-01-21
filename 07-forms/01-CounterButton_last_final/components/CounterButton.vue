@@ -1,11 +1,37 @@
 <template>
-  <button></button>
+  <button type="button" @click="onClick">{{ count_ }}</button>
 </template>
 
 <script>
-export default {};
+export default {
+  model: {
+    prop: 'count',
+    event: 'increment',
+  },
+  props: {
+    count: {
+      type: Number,
+      default: 0,
+    },
+  },
+  data() {
+    return {
+      count_: this.count,
+    };
+  },
+  watch: {
+    count(newValue, oldVal) {
+      if (newValue !== oldVal) {
+        this.count_ = newValue;
+      }
+    },
+  },
+  methods: {
+    onClick() {
+      this.$emit('increment', ++this.count_);
+    },
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
