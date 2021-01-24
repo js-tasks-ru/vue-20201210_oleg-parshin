@@ -7,7 +7,11 @@
     <div class="form-group">
       <select class="form-control" title="Тип" v-model="agendaItem_.type">
         <option disabled value="">Выберете тип</option>
-        <option v-for="type in types" :key="type.text" :value="type.value">
+        <option
+          v-for="type in $options.agendaItemTypes"
+          :key="type.text"
+          :value="type.value"
+        >
           {{ type.text }}
         </option>
       </select>
@@ -60,7 +64,11 @@
     <div v-if="isTalk" class="form-group">
       <label class="form-label">Язык</label>
       <select class="form-control" title="Язык" v-model="agendaItem_.language">
-        <option v-for="lang in langs" :key="lang.text" :value="lang.value">
+        <option
+          v-for="lang in $options.langs"
+          :key="lang.text"
+          :value="lang.value"
+        >
           {{ lang.text }}
         </option>
       </select>
@@ -99,13 +107,9 @@ export default {
       agendaItem_: { ...this.agendaItem },
     };
   },
+  agendaItemTypes: getAgendaItemTypes(),
+  langs: getTalkLanguages(),
   computed: {
-    types() {
-      return getAgendaItemTypes();
-    },
-    langs() {
-      return getTalkLanguages();
-    },
     isTalk() {
       return this.agendaItem_.type === 'talk';
     },
