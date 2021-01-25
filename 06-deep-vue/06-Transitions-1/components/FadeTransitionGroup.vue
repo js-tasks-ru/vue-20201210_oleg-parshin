@@ -1,12 +1,11 @@
 <template>
-  <transition-group name="fade-list" v-on="$listeners" v-bind="$attrs">
+  <transition-group name="fade-list">
     <slot />
   </transition-group>
 </template>
 
 <script>
 export default {
-  inheritAttrs: false,
   name: 'FadeTransitionGroup',
 };
 </script>

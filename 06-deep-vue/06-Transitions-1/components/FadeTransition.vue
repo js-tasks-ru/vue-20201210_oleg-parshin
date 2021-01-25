@@ -1,13 +1,12 @@
 <template>
   <transition name="fade" mode="out-in">
-    <slot v-on="$listeners" v-bind="$attrs" />
+    <slot />
   </transition>
 </template>
 
 <script>
 export default {
   name: 'FadeTransition',
-  inheritAttrs: false,
 };
 </script>
 
