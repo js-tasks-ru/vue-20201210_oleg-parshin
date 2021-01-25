@@ -40,18 +40,11 @@ export default {
       [
         this.$slots.default.map((vNode) => {
           const VNode = cloneVNode(vNode);
-          return h(
-            VNode.tag,
-            {
-              key: VNode.data.key,
-              class: {
-                ...VNode.data.class,
-                'fade-list-item': true,
-              },
-              staticClass: VNode.data.staticClass,
-            },
-            [VNode.children[0]],
-          );
+          VNode.data.class = {
+            ...VNode.data.class,
+            'fade-list-item': true,
+          };
+          return VNode;
         }),
       ],
     );
