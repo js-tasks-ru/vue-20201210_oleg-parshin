@@ -1,5 +1,5 @@
 <template>
-  <button type="button" @click="onClick">{{ count }}</button>
+  <button type="button" @click="onClick">{{ count_ }}</button>
 </template>
 
 <script>
@@ -14,9 +14,19 @@ export default {
       default: 0,
     },
   },
+  data() {
+    return {
+      count_: this.count,
+    };
+  },
+  watch: {
+    count(newVal) {
+      this.count_ = newVal;
+    },
+  },
   methods: {
     onClick() {
-      this.$emit('increment', ++this.count);
+      this.$emit('increment', ++this.count_);
     },
   },
 };
