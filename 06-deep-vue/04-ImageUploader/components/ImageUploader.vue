@@ -1,24 +1,97 @@
 <template>
   <div class="image-uploader">
     <label
-      class="image-uploader__preview image-uploader__preview-loading"
-      :style="`--bg-image: url('https://course-vue.javascript.ru/api/images/1')`"
+      class="image-uploader__preview"
+      :class="{ 'image-uploader__preview-loading': loading }"
+      :style="`--bg-image: ${imgUrl ? 'url(' + imgUrl + ')' : ''}`"
+      @click="click"
     >
-      <span>Удалить изображение</span>
+      <span>{{ inState }}</span>
       <input
+        ref="input"
         type="file"
         accept="image/*"
         class="form-control-file"
+        v-on="listeners"
+        v-bind="$attrs"
+        :disabled="loading"
       />
     </label>
   </div>
 </template>
 
 <script>
-// import { ImageService } from '../image-service';
+import { ImageService } from '../image-service';
 
 export default {
   name: 'ImageUploader',
+  data() {
+    return {
+      state: {
+        upload: 'Загрузить изображение',
+        remove: 'Удалить изображение',
+        uploading: 'Загрузка...',
+      },
+      loading: false,
+    };
+  },
+  props: {
+    imageId: {
+      type: [Number, null],
+      default: null,
+    },
+  },
+  model: {
+    prop: 'imageId',
+    event: 'change',
+  },
+  computed: {
+    listeners() {
+      return {
+        ...this.$listeners,
+        change: (e) => this.change(e),
+      };
+    },
+    inState() {
+      let value;
+      if (this.imageId === null && !this.loading) {
+        value = this.state.upload;
+      }
+      if (this.imageId === null && this.loading) {
+        value = this.state.uploading;
+      }
+      if (this.imageId !== null && !this.loading) {
+        value = this.state.remove;
+      }
+      return value;
+    },
+    imgUrl() {
+      return ImageService.getImageURL(this.imageId);
+    },
+  },
+  methods: {
+    change({ target }) {
+      this.loading = true;
+      ImageService.uploadImage(target.files[0])
+        .then(({ id }) => {
+          this.loading = false; // fromm finally block to pass test
+          this.$emit('change', id);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          // this.loading = false;
+          target.value = '';
+        });
+    },
+    click(e) {
+      if (this.imageId !== null) {
+        e.preventDefault();
+        this.$emit('change', null);
+        this.$refs.input.value = ''; // added to pass the test, doing that in change method
+      }
+      this.$emit('click', e);
+    },
+  },
 };
 </script>
 

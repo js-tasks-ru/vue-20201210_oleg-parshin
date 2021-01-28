@@ -36,6 +36,7 @@ export default {
 
   methods: {
     handleSubmit(meetup) {
+      console.log(meetup);
       this.meetup = meetup;
     },
 

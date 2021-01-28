@@ -13,8 +13,7 @@
 
     <fade-transition-group tag="div">
       <div v-for="item in list" :key="item">
-        {{ item }}
-        <div></div>
+        <div>{{ item }}</div>
       </div>
     </fade-transition-group>
   </div>
